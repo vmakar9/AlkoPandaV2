@@ -13,6 +13,7 @@ import java.util.List;
 public class NewsController {
     private NewsService newsService;
 
+    @PostMapping("")
     public News createNews(@RequestBody News news) {
         return newsService.createNews(news);
     }
