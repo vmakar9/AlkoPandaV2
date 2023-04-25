@@ -1,15 +1,14 @@
 package com.alibou.security.user;
 
+import com.alibou.security.restaurant.Restaurant;
 import com.alibou.security.token.Token;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +38,17 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @Column(name = "profile_photo")
+  private byte[] profilephoto;
+
+  @ManyToMany
+  @JoinTable(
+          name = "user_favorite_restaurant",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "restaurant_id")
+  )
+  private Set<Restaurant> favoriteRestaurants = new HashSet<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
